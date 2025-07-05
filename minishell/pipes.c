@@ -84,7 +84,7 @@ void	execute_child_command(t_cmd *cmd, t_shell *shell)
 		exit(EXIT_FAILURE);
 	}
 	if (absolute_path(cmd->argv[0]))
-		path = argv[0];
+		path = cmd->argv[0];
 	if (execve(path, cmd->argv, envp) == -1)
 	{
 		perror("execve");

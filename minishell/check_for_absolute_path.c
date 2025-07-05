@@ -20,4 +20,5 @@ int absolute_path(char *cmd)
         else
             return (1);
 	}
+    return (0);
 }
