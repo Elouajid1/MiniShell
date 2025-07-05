@@ -39,7 +39,5 @@ int	handle_single_child_signals(int status)
 			return (write(STDOUT_FILENO, "Quit (core dumped)\n", 19), 131);
 		return (128 + sig);
 	}
-	// if (WIFEXITED(status))
-	// 	return (WIFEXITED(status));
 	return (0);
 }

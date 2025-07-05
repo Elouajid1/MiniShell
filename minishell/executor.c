@@ -36,6 +36,7 @@ int	fork_and_execute(char *path, char **argv, char **envp)
 {
 	pid_t	pid;
 	int		status;
+	char	*tmp;
 	void	(*old_sigint)(int);
 
 	old_sigint = signal(SIGINT, handle_sigint_single);
@@ -44,6 +45,8 @@ int	fork_and_execute(char *path, char **argv, char **envp)
 		return (signal(SIGINT, old_sigint), perror("fork"), 1);
 	if (pid == 0)
 	{
+		if (absolute_path(argv[0]))
+			path = argv[0];
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (execve(path, argv, envp) == -1)

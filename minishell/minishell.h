@@ -207,4 +207,5 @@ int					pipeline_loop(t_cmd *cmds, t_shell *shell);
 int					handle_pipe_creation(t_cmd *current, int *pipe_fds);
 bool				is_numeric(char *str);
 bool				is_valid_identifier(char *str);
+void				absolute_path(char *cmd, char **env, int ac);
 #endif
