@@ -6,11 +6,11 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:17 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/06/29 18:39:46 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:51:55 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+# include "minishell.h"
 
 t_command *new_comm()
 {
@@ -106,55 +106,31 @@ t_command *parse(t_command **comm, t_token *token)
 			(*comm)->argv = argv_add(&(*comm)->argv, token->value);
 		else if (token->type == T_REDIR_IN)
 		{
-			if (token->next)
-			{
-				redir_add(&(*comm)->redir, token->next->value, R_INPUT);
-				token = token->next;
-			}
-			else
-				return (NULL);
+			redir_add(&(*comm)->redir, token->next->value, R_INPUT);
+			token = token->next;
 		}
 		else if (token->type == T_REDIR_OUT)
 		{
-			if (token->next)
-			{
-				redir_add(&(*comm)->redir, token->next->value, R_OUTPUT);
-				token = token->next;
-			}
-			else
-				return (NULL);
+			redir_add(&(*comm)->redir, token->next->value, R_OUTPUT);
+			token = token->next;
 		}
 		else if (token->type == T_APPEND)
 		{
-			if (token->next)
-			{
-				redir_add(&(*comm)->redir, token->next->value, R_APPEND);
-				token = token->next;
-			}
-			else
-				return (NULL);
+			redir_add(&(*comm)->redir, token->next->value, R_APPEND);
+			token = token->next;
 		}
 		else if (token->type == T_HEREDOC)
 		{
-			if (token->next)
-			{
-				redir_add(&(*comm)->redir, token->next->value, R_HEREDOC);
-				token = token->next;
-			}
-			else
-				return (NULL);
+			redir_add(&(*comm)->redir, token->next->value, R_HEREDOC);
+			token = token->next;
 		}
 		else if (token->type == T_PIPE)
 		{
-			if (token->next)
-			{
-				add_comm(&(*comm));
-				(*comm) = (*comm)->next;
-			}
-			else
-				return (NULL);
+			add_comm(&(*comm));
+			(*comm) = (*comm)->next;
 		}
 		token = token->next;
 	}
 	return (head);
 }
+

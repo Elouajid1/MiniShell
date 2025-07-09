@@ -5,12 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/28 17:02:33 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/02 15:32:01 by mel-ouaj         ###   ########.fr       */
+/*   Created: 2024/11/05 15:46:20 by isallali          #+#    #+#             */
+/*   Updated: 2025/07/09 13:51:30 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_operator(char c)
+{
+	if (c == '|' || c == '>' || c == '<')
+		return (1);
+	return (0);
+}
+
+int	is_double_operator(char c, char next)
+{
+	if ((c == '>' && next == '>') || (c == '<' && next == '<'))
+		return (1);
+	return (0);
+}
 
 static int count_words(char const *s, char c)
 {
@@ -27,8 +41,16 @@ static int count_words(char const *s, char c)
 		{    
 			while (s[i] && s[i] == c)
 				i++;
-		} 
-		if (s[i] && (s[i] == 39 || s[i] == 34))
+		}
+		if (s[i] && is_operator(s[i]))
+		{
+			count++;
+			if (is_double_operator(s[i], s[i + 1]))
+				i += 2;
+			else
+				i++;
+		}
+		else if (s[i] && (s[i] == 39 || s[i] == 34))
 		{
 			q = s[i];
 			i++;
@@ -42,9 +64,9 @@ static int count_words(char const *s, char c)
 		}
 		while (s[i] && s[i] == c)
 			i++;
-		if (s[i] && s[i] != c && s[i] != 34 && s[i] != 39)
+		if (s[i] && s[i] != c && !is_operator(s[i]) && s[i] != 34 && s[i] != 39)
 			count++;
-		while (s[i] != '\0' && s[i] != c)
+		while (s[i] != '\0' && !is_operator(s[i]) && s[i] != c)
 			i++;
 	}
 	return (count);
@@ -56,7 +78,14 @@ static int slen(char const *s, char c)
 	char q;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	if (s[i] && is_operator(s[i]))
+	{
+		if (is_double_operator(s[i], s[i + 1]))
+			return (2);
+		else
+			return (1);
+	}		
+	while (s[i] && s[i] != c && !is_operator(s[i]))
 	{
 		if (s[i] && (s[i] == 34 || s[i] == 39))
 		{
@@ -133,3 +162,17 @@ char	**ft_split(char const *s, char c)
 	strs[i] = 0;
 	return (strs);
 }
+
+// int main ()
+// {
+// 	int i = 0;
+// 	char *str = "|gf jkng |\"fdkg\"|";
+// 	char **strs = ft_split(str, 32);
+	
+// 	while (strs[i])
+// 	{
+// 		printf("%d\n", slen(strs[i], 32));
+// 		i++;
+// 	}
+// 	// printf("%d\n", count_words(str, 32));
+// }
