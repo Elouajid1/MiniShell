@@ -210,6 +210,9 @@ bool				is_numeric(char *str);
 bool				is_valid_identifier(char *str);
 int					absolute_path(char *cmd);
 int					handle_path_error(char *cmd_name);
-void	error(char *str);
-void	syntax_errors(t_token *token);
+void				error(char *str);
+void				syntax_errors(t_token *token);
+int					handle_builtin_logic(t_cmd *cmd, t_shell *shell);
+void				restore_stdio(int backup[2]);
+int					backup_stdio(int backup[2]);
 #endif

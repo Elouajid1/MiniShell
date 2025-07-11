@@ -11,21 +11,26 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-// void print_env_list(t_env *head)
-// {
-//     t_env *current = head;
+int	execute_builtin(t_cmd *cmd, t_shell *shell)
+{
+	int	status;
+	int	backup_fds[2];
 
-//     while (current)
-//     {
-//         printf("KEY: %s\n", current->key);
-//         if (current->value)
-//             printf("VALUE: %s\n", current->value);
-//         else
-//             printf("VALUE: (null)\n");
-//         printf("-------------------\n");
-//         current = current->next;
-//     }
-// }
+	if (cmd->redir)
+	{
+		if (backup_stdio(backup_fds) == -1)
+			return (1);
+		if (setup_redirections(cmd->redir) == -1)
+		{
+			restore_stdio(backup_fds);
+			return (1);
+		}
+	}
+	status = handle_builtin_logic(cmd, shell);
+	if (cmd->redir)
+		restore_stdio(backup_fds);
+	return (status);
+}
 
 int	export_variable(t_shell *shell, char *arg)
 {

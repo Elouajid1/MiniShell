@@ -13,25 +13,6 @@
 
 extern t_global	g_data;
 
-int	execute_builtin(t_cmd *cmd, t_shell *shell)
-{
-	if (ft_strcmp("env", cmd->argv[0]) == 0)
-		return (builtin_env(shell->env));
-	if (ft_strcmp("echo", cmd->argv[0]) == 0)
-		return (builtin_echo(cmd->argv));
-	if (ft_strcmp("cd", cmd->argv[0]) == 0)
-		return (builtin_cd(cmd->argv, shell));
-	if (ft_strcmp("pwd", cmd->argv[0]) == 0)
-		return (builtin_pwd());
-	if (ft_strcmp("unset", cmd->argv[0]) == 0)
-		return (builtin_unset(cmd->argv, shell));
-	if (ft_strcmp("export", cmd->argv[0]) == 0)
-		return (builtin_export(cmd->argv, shell));
-	if (ft_strcmp("exit", cmd->argv[0]) == 0)
-		return (builtin_exit(cmd->argv, shell));
-	return (1);
-}
-
 int	fork_and_execute(char *path, char **argv, char **envp, t_shell *shell)
 {
 	pid_t	pid;

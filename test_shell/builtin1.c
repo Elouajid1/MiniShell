@@ -13,6 +13,25 @@
 
 extern t_global	g_data;
 
+int	handle_builtin_logic(t_cmd *cmd, t_shell *shell)
+{
+	if (ft_strcmp("env", cmd->argv[0]) == 0)
+		return (builtin_env(shell->env));
+	if (ft_strcmp("echo", cmd->argv[0]) == 0)
+		return (builtin_echo(cmd->argv));
+	if (ft_strcmp("cd", cmd->argv[0]) == 0)
+		return (builtin_cd(cmd->argv, shell));
+	if (ft_strcmp("pwd", cmd->argv[0]) == 0)
+		return (builtin_pwd());
+	if (ft_strcmp("unset", cmd->argv[0]) == 0)
+		return (builtin_unset(cmd->argv, shell));
+	if (ft_strcmp("export", cmd->argv[0]) == 0)
+		return (builtin_export(cmd->argv, shell));
+	if (ft_strcmp("exit", cmd->argv[0]) == 0)
+		return (builtin_exit(cmd->argv, shell));
+	return (1);
+}
+
 int	builtin_cd(char **argv, t_shell *shell)
 {
 	char	*path;
@@ -37,47 +56,6 @@ int	builtin_cd(char **argv, t_shell *shell)
 		return (1);
 	}
 	return (0);
-}
-
-int	builtin_env(t_env *env)
-{
-	char	*path;
-
-	while (env)
-	{
-		path = getenv("PATH");
-		if (!path)
-		{
-			ft_putendl_fd("minishell: env: No such file or directory",
-				STDOUT_FILENO);
-			return (1);
-		}
-		if (env->value)
-		{
-			ft_putstr_fd(env->key, STDOUT_FILENO);
-			ft_putchar_fd('=', STDOUT_FILENO);
-			ft_putendl_fd(env->value, STDOUT_FILENO);
-		}
-		env = env->next;
-	}
-	return (0);
-}
-
-void	print_env_list(t_env *head)
-{
-	t_env	*current;
-
-	current = head;
-	while (current)
-	{
-		printf("KEY: %s\n", current->key);
-		if (current->value)
-			printf("VALUE: %s\n", current->value);
-		else
-			printf("VALUE: (null)\n");
-		printf("-------------------\n");
-		current = current->next;
-	}
 }
 
 int	builtin_export(char **argv, t_shell *shell)
