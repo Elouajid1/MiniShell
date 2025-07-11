@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:17 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/09 13:51:55 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:46:29 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,31 @@ int argv_len(char **argv)
 	return (i);
 }
 
-char **argv_add(char ***argv, char *value)
+char **argv_add(char **argv, char *value)
 {
 	char **new;
 	int len;
+	int	i;
+	int j;
 
-	len = argv_len(*argv);
-	new = realloc((*argv), sizeof(char *) * (len + 2));
+	j = 0;
+	i = 0;
+	len = argv_len(argv);
+	new = malloc(sizeof(char *) * (len + 2));
 	if (!new)
 		return (NULL);
+	if (argv)
+	{
+		while (argv[i])
+		{
+
+			new[i] = argv[i];
+			i++;
+		}
+	}
 	new[len] = value;
 	new[len + 1] = NULL;
+	free(argv);
 	return (new);
 }
 
@@ -103,7 +117,7 @@ t_cmd *parse(t_cmd **comm, t_token *token)
 	while (token)
 	{
 		if (token->type == T_WORD)
-			(*comm)->argv = argv_add(&(*comm)->argv, token->value);
+			(*comm)->argv = argv_add((*comm)->argv, token->value);
 		else if (token->type == T_REDIR_IN)
 		{
 			redir_add(&(*comm)->redir, token->next->value, R_INPUT);
