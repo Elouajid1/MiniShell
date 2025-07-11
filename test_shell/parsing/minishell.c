@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:40:27 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/09 13:58:24 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:48:03 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,19 @@ void	expand(t_token **token, t_env *env)
 	}
 }
 
-void	error(char *str)
+int	error(char *str)
 {
 	printf("%s\n", str);
-	exit (1);
+	return (1);
 }
 
-void	syntax_errors(t_token *token)
+int	syntax_errors(t_token *token)
 {
 	t_token	*head;
 
 	head = token;
+	// if (!head)
+	// 	return (1);
 	if (head->type == T_PIPE)
 		error("Syntax Error!");
 	while (head)
@@ -55,6 +57,7 @@ void	syntax_errors(t_token *token)
 		}
 		head = head->next;
 	}
+	return (0);
 }
 
 // int main()

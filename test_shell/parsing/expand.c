@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:54:55 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/02 14:58:44 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:39:24 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ char	*expand_str(char *str, t_env *env)
 		else if (str[i] == '$' && in_single == 0)
 		{
 			i++;
-			if (str[i] == '$')
+			if (!str[i])
+				return (NULL);
+			if (str[i] && str[i] == '$')
 			{
 				tmp = res;
 				value = ft_itoa(getpid());
@@ -106,7 +108,7 @@ char	*expand_str(char *str, t_env *env)
 				free(tmp);
 				i++;
 			}
-			else if (str[i] == '?')
+			else if (str[i] && str[i] == '?')
 			{
 				tmp = res;
 				value = ft_itoa(g_data.last_exit_status);
@@ -122,6 +124,8 @@ char	*expand_str(char *str, t_env *env)
 					i++;
 				value = ft_substr(str, j, i - j);
 				finded = find_env_node(env, value);
+				if (!finded)
+					return (NULL);
 				var = finded->value;
 				if (!var)
 					var = "";

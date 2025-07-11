@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:58:25 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/02 12:58:28 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:39:35 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*find_env_node(t_env *env, char *key)

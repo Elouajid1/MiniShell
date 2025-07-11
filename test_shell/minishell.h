@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/05/28 11:14:51 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:46:42 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef MINISHELL_H
+
+# ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "./libft/libft.h"
@@ -210,6 +211,6 @@ bool				is_numeric(char *str);
 bool				is_valid_identifier(char *str);
 int					absolute_path(char *cmd);
 int					handle_path_error(char *cmd_name);
-void	error(char *str);
-void	syntax_errors(t_token *token);
+int					error(char *str);
+int					syntax_errors(t_token *token);
 #endif

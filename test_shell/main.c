@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/05/28 11:07:59 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:49:35 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,23 @@ int	main_loop(t_shell *shell, char **env)
 			continue ;
 		}
 		add_history(command);
-		cmd_array = ft_split(command, 32);
+		cmd_array = ft_split1(command, 32);
+		if (!cmd_array)
+		{
+			free (command);
+			return (0);
+		}
 		tokenize(&(shell->token), cmd_array);
-		syntax_errors(shell->token);
+		if (shell->token == NULL)
+		{
+			free (command);
+			continue ;
+		}
+		if (syntax_errors(shell->token))
+		{
+			free(command);
+			continue ;		
+		}
 		expand(&(shell->token), shell->env);
 		shell->cmds = parse(&(shell->command), shell->token);
 		// shell->cmds = build_test_commands(shell, env);
