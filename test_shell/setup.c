@@ -11,6 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void	setup_child_process(t_cmd *cmd, int prev_fd, int *pipe_fds)
+{
+	if (prev_fd != -1)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (pipe_fds)
+	{
+		dup2(pipe_fds[1], STDOUT_FILENO);
+		close(pipe_fds[0]);
+		close(pipe_fds[1]);
+	}
+}
+
+void	setup_parent_process(int *prev_fd, int *pipe_fds, bool has_next)
+{
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (has_next)
+	{
+		close(pipe_fds[1]);
+		*prev_fd = pipe_fds[0];
+	}
+}
+
 t_env	*add_env_as_node(char **env)
 {
 	t_env	*new_node;

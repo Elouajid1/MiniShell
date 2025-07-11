@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/10 18:46:42 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/11 13:33:43 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,4 +213,7 @@ int					absolute_path(char *cmd);
 int					handle_path_error(char *cmd_name);
 int					error(char *str);
 int					syntax_errors(t_token *token);
+int					handle_builtin_logic(t_cmd *cmd, t_shell *shell);
+void				restore_stdio(int backup[2]);
+int					backup_stdio(int backup[2]);
 #endif

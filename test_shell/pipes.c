@@ -13,6 +13,23 @@
 
 extern t_global	g_data;
 
+int	backup_stdio(int backup[2])
+{
+	backup[0] = dup(STDIN_FILENO);
+	backup[1] = dup(STDOUT_FILENO);
+	if (backup[0] == -1 || backup[1] == -1)
+		return -1;
+	return 0;
+}
+
+void	restore_stdio(int backup[2])
+{
+	dup2(backup[0], STDIN_FILENO);
+	dup2(backup[1], STDOUT_FILENO);
+	close(backup[0]);
+	close(backup[1]);
+}
+
 void	begin_child_execution(t_cmd *current, int prev_fd, int *pipe_fds,
 		t_shell *shell)
 {
@@ -21,32 +38,6 @@ void	begin_child_execution(t_cmd *current, int prev_fd, int *pipe_fds,
 	setup_child_process(current, prev_fd, pipe_fds);
 	setup_redirections(current->redir);
 	execute_child_command(current, shell);
-}
-
-void	setup_child_process(t_cmd *cmd, int prev_fd, int *pipe_fds)
-{
-	if (prev_fd != -1)
-	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
-	}
-	if (pipe_fds)
-	{
-		dup2(pipe_fds[1], STDOUT_FILENO);
-		close(pipe_fds[0]);
-		close(pipe_fds[1]);
-	}
-}
-
-void	setup_parent_process(int *prev_fd, int *pipe_fds, bool has_next)
-{
-	if (*prev_fd != -1)
-		close(*prev_fd);
-	if (has_next)
-	{
-		close(pipe_fds[1]);
-		*prev_fd = pipe_fds[0];
-	}
 }
 
 int	process_pipeline_commands(t_cmd *cmds, t_shell *shell)
