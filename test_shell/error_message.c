@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_message.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:02:05 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/30 14:02:10 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:53:13 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int	handle_path_error(char *cmd_name)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
-	ft_putstr_fd(": No such file dddor directory\n", 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	return (127);
 }

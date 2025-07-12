@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command_signal.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 12:26:59 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/30 12:27:03 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:44:13 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ extern t_global	g_data;
 
 void	handle_sigint_single(int sig)
 {
+	(void)sig;
 	if (g_data.single_pid > 0)
 		kill(g_data.single_pid, SIGINT);
 }
 
 void	handle_sigquit_single(int sig)
 {
+	(void)sig;
 	if (g_data.single_pid > 0)
 		kill(g_data.single_pid, SIGQUIT);
 }

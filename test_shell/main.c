@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/10 18:49:35 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:12:47 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	main_loop(t_shell *shell, char **env)
 
 	setup_signals();
 	shell->env = array_to_env(env);
+	shell->token = NULL;
 	while (1)
 	{
 		command = readline("minishell$ ");
@@ -85,6 +86,7 @@ int	main_loop(t_shell *shell, char **env)
 		if (syntax_errors(shell->token))
 		{
 			free(command);
+			free_tokens(&shell->token);
 			continue ;		
 		}
 		expand(&(shell->token), shell->env);
@@ -95,7 +97,8 @@ int	main_loop(t_shell *shell, char **env)
 		// printf("gogo\n");
 		// free_array(shell->cmds->argv);
 		free(command);
-		free_tokens(&(shell->token));
+		free_tokens(&shell->token);
+		free_command(&shell->cmds);
 		// free_command(&(shell->command));
 		shell->token = NULL;
 		shell->command = NULL;
@@ -105,14 +108,16 @@ int	main_loop(t_shell *shell, char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	char *str;
+	// char *str;
 	int i;
-	int pos;
-	char *path;
-	char *command;
+	// int pos;
+	// char *path;
+	// char *command;
 	t_shell *shell;
 
 	i = 0;
+	(void)ac;
+	(void)av;
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);

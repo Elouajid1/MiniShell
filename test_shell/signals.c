@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:13:21 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/29 13:13:23 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:45:12 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+
+# include "minishell.h"
 
 extern t_global	g_data;
 
@@ -37,6 +38,7 @@ void	handle_sigint_pipeline(int sig)
 {
 	int	i;
 
+	(void)sig;
 	i = 0;
 	g_data.g_kill_pipeline = 1;
 	write(STDOUT_FILENO, "\n", 1);
@@ -49,6 +51,7 @@ void	handle_sigint_pipeline(int sig)
 
 void	handle_sigint_prompt(int sig)
 {
+	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
 	g_data.last_exit_status = 130;
 	if (isatty(STDIN_FILENO))
@@ -63,6 +66,7 @@ void	handle_sigquit(int sig)
 {
 	int i;
 
+	(void)sig;
 	i = 0;
 	while (i < g_data.pipeline_count)
 	{

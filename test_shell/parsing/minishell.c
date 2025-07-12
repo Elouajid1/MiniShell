@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:40:27 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/10 18:48:03 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:00:53 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,34 @@ int	syntax_errors(t_token *token)
 	// if (!head)
 	// 	return (1);
 	if (head->type == T_PIPE)
-		error("Syntax Error!");
+	{		
+		printf("%s\n", "Syntax Error! pipe first");
+		return 1;
+	}
 	while (head)
 	{
 		if (head->type == T_APPEND || head->type == T_REDIR_IN 
 			|| head->type == T_REDIR_OUT || head->type == T_HEREDOC)
 		{
 			if (head->next == NULL || head->next->type != T_WORD)
-				error("Syntax Error!");
+			{
+				printf("%s\n", "Syntax Error! redir");
+				return (1);
+			}
 		}
-		if (head->type == T_PIPE)
+		else if (head->type == T_PIPE)
 		{
 			if (head->next == NULL)
-				error("Syntax Error!");
+			{
+				printf("%s\n", "Syntax Error! pipe last");
+				return (1);
+			}
 			else if (head->next->type == T_PIPE)
-				error("Syntax Error!");
+			{
+				printf("%s\n", "Syntax Error! pipe after pipe");
+				return (1);
+			}
+			head = head->next;
 		}
 		head = head->next;
 	}

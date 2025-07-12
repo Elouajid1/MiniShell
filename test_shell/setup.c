@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 11:57:47 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/15 11:57:50 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:41:50 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 void	setup_child_process(t_cmd *cmd, int prev_fd, int *pipe_fds)
 {
+	(void)cmd;
 	if (prev_fd != -1)
 	{
 		dup2(prev_fd, STDIN_FILENO);
@@ -56,7 +58,7 @@ char	**split_env_line(char *line)
 {
 	char	**res;
 	int		pos;
-	int		len;
+	// int		len;
 
 	if (!line)
 		return (NULL);
