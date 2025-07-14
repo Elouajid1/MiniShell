@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/12 14:12:47 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:35:13 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	main_loop(t_shell *shell, char **env)
 			continue ;		
 		}
 		expand(&(shell->token), shell->env);
+		q_rremoval(&shell->token);
 		shell->cmds = parse(&(shell->command), shell->token);
 		// shell->cmds = build_test_commands(shell, env);
 		shell->last_exit_code = execute_commands(shell);
