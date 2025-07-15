@@ -14,110 +14,105 @@
 #include <stdlib.h>
 #include <string.h>
 
-t_global	g_data = {0};
+int			g_last_exit_code = 0;
 
-// void print_env_list(t_env *head)
-// {
-//     t_env *current = head;
+static int	handle_empty_or_tokenize(t_shell *shell, char *command)
+{
+	char	**cmd_array;
 
-//     while (current)
-//     {
-//         printf("KEY: %s\n", current->key);
-//         if (current->value)
-//             printf("VALUE: %s\n", current->value);
-//         else
-//             printf("VALUE: (null)\n");
-//         printf("-------------------\n");
-//         current = current->next;
-//     }
-// }
+	if (*command == '\0')
+	{
+		free(command);
+		return (1);
+	}
+	add_history(command);
+	cmd_array = ft_split1(command, 32);
+	if (!cmd_array)
+	{
+		free(command);
+		return (0);
+	}
+	tokenize(&(shell->token), cmd_array);
+	if (shell->token == NULL)
+	{
+		free(command);
+		return (1);
+	}
+	return (2);
+}
 
-// t_cmd	*build_test_commands(t_shell *shell, char **env)
-// {
-// 	t_cmd	*cmd1;
-// 	// t_cmd	*cmd2;
-// 	// t_cmd	*cmd3;
+static int	syntax_check_and_expand(t_shell *shell, char *command)
+{
+	if (syntax_errors(shell->token))
+	{
+		free(command);
+		return (1);
+	}
+	expand(&(shell->token), shell->env);
+	return (2);
+}
 
-// 	cmd1 = malloc(sizeof(t_cmd));
-// 	// ---------- Command 1: cat < infile.txt ----------
-// 	cmd1->argv = malloc(sizeof(char *) * 4);
-// 	cmd1->argv[0] = ft_strdup("export");
-// 	cmd1->argv[1] = ft_strdup("_soso23");
-// 	cmd1->argv[2] = ft_strdup("_dodo=45");
-// 	cmd1->argv[3] = NULL;
-// 	cmd1->next = NULL;
-// 	cmd1->redir = NULL;
-// 	shell->env = array_to_env(env);
-// 	return (cmd1);
-// }
+static void	execute_and_cleanup(t_shell *shell, char *command)
+{
+	shell->cmds = parse(&(shell->command), shell->token);
+	shell->last_exit_code = execute_commands(shell);
+	g_last_exit_code = shell->last_exit_code;
+	free(command);
+	free_tokens(&(shell->token));
+	shell->token = NULL;
+	shell->command = NULL;
+}
 
 int	main_loop(t_shell *shell, char **env)
 {
 	char	*command;
-	char	**cmd_array;
+	int		result;
 
+	(void)env;
 	setup_signals();
-	shell->env = array_to_env(env);
+	shell->interactive = isatty(STDIN_FILENO);
 	while (1)
 	{
 		command = readline("minishell$ ");
 		if (!command)
 			break ;
-		if (*command == '\0')
-		{
-			free(command);
-			// cleanup_shell(shell);
-			continue ;
-		}
-		add_history(command);
-		cmd_array = ft_split1(command, 32);
-		if (!cmd_array)
-		{
-			free (command);
+		result = handle_empty_or_tokenize(shell, command);
+		if (result == 0)
 			return (0);
-		}
-		tokenize(&(shell->token), cmd_array);
-		if (shell->token == NULL)
-		{
-			free (command);
+		if (result == 1)
 			continue ;
-		}
-		if (syntax_errors(shell->token))
-		{
-			free(command);
-			continue ;		
-		}
-		expand(&(shell->token), shell->env);
-		shell->cmds = parse(&(shell->command), shell->token);
-		// shell->cmds = build_test_commands(shell, env);
-		shell->last_exit_code = execute_commands(shell);
-		g_data.last_exit_status = shell->last_exit_code;
-		// printf("gogo\n");
-		// free_array(shell->cmds->argv);
-		free(command);
-		free_tokens(&(shell->token));
-		// free_command(&(shell->command));
-		shell->token = NULL;
-		shell->command = NULL;
+		result = syntax_check_and_expand(shell, command);
+		if (result == 1)
+			continue ;
+		execute_and_cleanup(shell, command);
 	}
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **envp)
 {
-	char *str;
-	int i;
-	int pos;
-	char *path;
-	char *command;
-	t_shell *shell;
+	char	*str;
+	int		pos;
+	char	*path;
+	char	*command;
+	t_shell	*shell;
 
-	i = 0;
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);
-	g_data.interactive = isatty(STDIN_FILENO);
-	main_loop(shell, env);
+	shell->shell_lvl = 1;
+	if (!envp || !envp[0])
+	{
+		shell->env = NULL;
+		shell->env_flag = 1;
+		shell->env = init_minimal_env(shell);
+	}
+	else
+	{
+		shell->env_flag = 0;
+		shell->env = array_to_env(envp, shell);
+	}
+	main_loop(shell, envp);
 	printf("exit\n");
 	return (shell->last_exit_code);
 }

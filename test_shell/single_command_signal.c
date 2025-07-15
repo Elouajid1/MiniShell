@@ -12,18 +12,19 @@
 
 #include "minishell.h"
 
-extern t_global	g_data;
+extern int	g_last_exit_code;
 
 void	handle_sigint_single(int sig)
 {
-	if (g_data.single_pid > 0)
-		kill(g_data.single_pid, SIGINT);
+	sig++;
+	return ;
 }
 
 void	handle_sigquit_single(int sig)
 {
-	if (g_data.single_pid > 0)
-		kill(g_data.single_pid, SIGQUIT);
+	sig++;
+	g_last_exit_code = 131;
+	return ;
 }
 
 int	handle_single_child_signals(int status)

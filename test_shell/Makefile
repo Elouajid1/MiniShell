@@ -1,9 +1,9 @@
 NAME    = minishell
 CC      = cc
 LIBFT   = ./libft/libft.a
-SRCS    = main.c utils.c tools.c signals.c free.c executor.c redirections.c env.c\
-		setup.c pipes.c builtin1.c builtin2.c builtin3.c single_command_signal.c\
-		error_message.c heredoc.c\
+SRCS    = main.c utils.c tools.c signals.c free.c executor.c redirections.c env.c export_vars.c\
+		setup.c pipes.c builtin1.c builtin2.c builtin3.c single_command_signal.c helper_functions.c\
+		error_message.c heredoc.c env_i.c heredoc_signals.c heredoc_utils.c\
 		parsing/expand.c parsing/free.c parsing/parse.c parsing/tokenize.c parsing/ft_split.c parsing/minishell.c
 OBJS    = $(SRCS:.c=.o)
 INCLUDE = -lreadline -lncurses

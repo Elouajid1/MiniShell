@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-extern t_global	g_data;
+extern int	g_last_exit_code;
 
 void	setup_signals(void)
 {
@@ -35,22 +35,14 @@ void	setup_child_signals(void)
 
 void	handle_sigint_pipeline(int sig)
 {
-	int	i;
-
-	i = 0;
-	g_data.g_kill_pipeline = 1;
+	sig++;
 	write(STDOUT_FILENO, "\n", 1);
-	while (i < g_data.pipeline_count)
-	{
-		kill(g_data.pipeline_pids[i], SIGINT);
-		i++;
-	}
 }
 
 void	handle_sigint_prompt(int sig)
 {
 	write(STDOUT_FILENO, "\n", 1);
-	g_data.last_exit_status = 130;
+	g_last_exit_code = 130;
 	if (isatty(STDIN_FILENO))
 	{
 		rl_on_new_line();
@@ -61,12 +53,6 @@ void	handle_sigint_prompt(int sig)
 
 void	handle_sigquit(int sig)
 {
-	int i;
-
-	i = 0;
-	while (i < g_data.pipeline_count)
-	{
-		kill(g_data.pipeline_pids[i], SIGINT);
-		i++;
-	}
+	g_last_exit_code = 131;
+	sig++;
 }

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+extern int	g_last_exit_code;
+
 int	handle_output_redirection(char *file, bool append)
 {
 	int	flags;
@@ -55,7 +57,7 @@ int	handle_input_redirection(char *file)
 	return (0);
 }
 
-int	setup_redirections(t_redir *redir)
+int	setup_redirections(t_redir *redir, t_shell *shell)
 {
 	t_redir	*current;
 
@@ -67,7 +69,7 @@ int	setup_redirections(t_redir *redir)
 		if (current->type == R_INPUT)
 			handle_input_redirection(current->file);
 		else if (current->type == R_HEREDOC)
-			handle_heredoc(current->file);
+			handle_heredoc(current->file, shell);
 		else if (current->type == R_OUTPUT)
 			handle_output_redirection(current->file, false);
 		else if (current->type == R_APPEND)

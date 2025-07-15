@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Tokenize.c                                         :+:      :+:    :+:   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:04:20 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/06/28 17:04:32 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:09:27 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void ft_lstadd_back(t_token **tokens, t_token *token)
 {
 	t_token *last;
 
+	last = NULL;
 	if (!tokens || !token)
 		return;
 	last = (*tokens);
@@ -53,9 +54,7 @@ void ft_lstadd_back(t_token **tokens, t_token *token)
 	else
 	{
 		while (last->next != NULL)
-		{
 			last = last->next;
-		}
 		last->next = token;
 	}
 }
@@ -66,6 +65,7 @@ void tokenize(t_token **token, char **strs)
 	t_token *new;
 
 	i = 0;
+	new = NULL;
 	while (strs[i])
 	{
 		new = ft_lstnew(strs[i]);
