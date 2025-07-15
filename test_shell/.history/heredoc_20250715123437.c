@@ -30,6 +30,9 @@ int	has_quotes(char *str)
 
 char	*evaluate_heredoc_line(char *line, t_shell *shell, char *delimiter)
 {
+	int		i;
+	char	*tmp_file;
+
 	if (has_quotes(delimiter))
 		return (ft_strdup(line));
 	else if (!has_quotes(delimiter))
@@ -93,10 +96,11 @@ int	read_heredoc(int fd, char *path, t_shell *shell)
 int	handle_heredoc(char *delimiter, t_shell *shell)
 {
 	char	*line;
+	char	*expanded_line;
+	char	*print_line;
 	int		fd;
 	char	*tmp_file;
 
-    line = NULL;
 	tmp_file = "/tmp/minishell_heredoc";
 	fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)

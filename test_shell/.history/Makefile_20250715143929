@@ -1,7 +1,7 @@
 NAME    = minishell
 CC      = cc
 LIBFT   = ./libft/libft.a
-CFLAGS	= -Werror -Wextra -Wall
+CFLAGS	= 
 SRCS    = main.c utils.c tools.c signals.c free.c executor.c redirections.c env.c export_vars.c\
 		setup.c pipes.c builtin1.c builtin2.c builtin3.c single_command_signal.c helper_functions.c\
 		error_message.c heredoc.c env_i.c heredoc_signals.c heredoc_utils.c\

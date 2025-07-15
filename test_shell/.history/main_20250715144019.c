@@ -91,10 +91,10 @@ int	main_loop(t_shell *shell, char **env)
 
 int	main(int ac, char **av, char **envp)
 {
+	char	*path;
+	char	*command;
 	t_shell	*shell;
 
-	ac++;
-	av++;
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);

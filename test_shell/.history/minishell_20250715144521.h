@@ -141,7 +141,7 @@ int					wait_for_children(t_shell *shell);
 void				execute_child_command(t_cmd *cmd, t_shell *shell);
 void				setup_parent_process(int *prev_fd, int pipe_fds[2],
 						bool has_next);
-void				setup_child_process(int prev_fd, int pipe_fds[2]);
+void				setup_child_process(int prev_fd,int pipe_fds[2]);
 int					handle_fork_and_exec(t_cmd *current, int prev_fd,
 						int *pipe_fds, t_shell *shell);
 int					process_pipeline_commands(t_cmd *cmds, t_shell *shell);

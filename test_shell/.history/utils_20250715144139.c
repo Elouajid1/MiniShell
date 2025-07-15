@@ -34,14 +34,14 @@ void	print_env_values(t_env *current)
 	}
 }
 
-int	print_export_list1(t_env *env)
+int	print_export_list1(t_env *env, t_shell *shell)
 {
 	t_env	*current;
 
 	current = env;
 	while (current)
 	{
-		print_env_values(current);
+		print_env_values(current, shell);
 		current = current->next;
 	}
 	return (0);

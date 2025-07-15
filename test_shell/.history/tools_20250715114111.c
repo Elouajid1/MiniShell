@@ -40,7 +40,7 @@ int	wait_for_children(t_shell *shell)
 	return (shell->last_status);
 }
 
-int	print_list(t_env *env)
+int	print_list(t_env *env, t_shell *shell)
 {
 	t_env	*current;
 
@@ -77,7 +77,7 @@ t_env	*new_env_node(char *key, char *value)
 	return (node);
 }
 
-void	add_defaults_env(t_env **env)
+void	add_defaults_env(t_env **env, t_shell *shell)
 {
 	t_env	*pwd;
 	t_env	*shlvl;

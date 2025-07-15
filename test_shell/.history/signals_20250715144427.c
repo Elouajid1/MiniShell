@@ -41,7 +41,7 @@ void	handle_sigint_pipeline(int sig)
 
 void	handle_sigint_prompt(int sig)
 {
-	sig++;
+	sig
 	write(STDOUT_FILENO, "\n", 1);
 	g_last_exit_code = 130;
 	if (isatty(STDIN_FILENO))

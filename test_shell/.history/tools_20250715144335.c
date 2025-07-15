@@ -77,7 +77,7 @@ t_env	*new_env_node(char *key, char *value)
 	return (node);
 }
 
-void	add_defaults_env(t_env **env)
+void	add_defaults_env(t_env **env, t_shell *shell)
 {
 	t_env	*pwd;
 	t_env	*shlvl;

@@ -111,6 +111,6 @@ int	print_export_list(t_env *env, t_shell *shell)
 		}
 	}
 	else
-		print_export_list1(env);
+		print_export_list1(env, shell);
 	return (0);
 }

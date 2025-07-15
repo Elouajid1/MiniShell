@@ -35,7 +35,7 @@ void	begin_child_execution(t_cmd *current, int prev_fd, int *pipe_fds,
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	setup_child_process(prev_fd, pipe_fds);
+	setup_child_process(current, prev_fd, pipe_fds);
 	setup_redirections(current->redir, shell);
 	execute_child_command(current, shell);
 }

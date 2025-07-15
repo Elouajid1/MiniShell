@@ -30,7 +30,7 @@ int	handle_builtin_logic(t_cmd *cmd, t_shell *shell)
 	return (1);
 }
 
-int	builtin_cd(char **argv, t_shell *shell)
+int	builtin_cd(char **argv, shell)
 {
 	char	*path;
 	char	*home;
@@ -58,6 +58,8 @@ int	builtin_cd(char **argv, t_shell *shell)
 
 int	builtin_exit(char **argv, t_shell *shell)
 {
+	long	exit_code;
+
 	if (argv[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);

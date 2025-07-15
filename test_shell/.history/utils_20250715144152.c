@@ -34,7 +34,7 @@ void	print_env_values(t_env *current)
 	}
 }
 
-int	print_export_list1(t_env *env)
+int	print_export_list1(t_env *env, t_shell *shell)
 {
 	t_env	*current;
 

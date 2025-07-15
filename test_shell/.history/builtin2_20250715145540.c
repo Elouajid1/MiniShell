@@ -68,7 +68,7 @@ int	builtin_env(t_env *env, t_shell *shell)
 		}
 	}
 	else
-		print_list(env);
+		print_list(env, shell);
 	return (0);
 }
 

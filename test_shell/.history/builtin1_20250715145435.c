@@ -30,14 +30,14 @@ int	handle_builtin_logic(t_cmd *cmd, t_shell *shell)
 	return (1);
 }
 
-int	builtin_cd(char **argv, t_shell *shell)
+int	builtin_cd(char **argv)
 {
 	char	*path;
 	char	*home;
 
 	if (!argv[1] || (argv[1] && argv[1][0] == '\0'))
 	{
-		home = find_env_key(shell->env, "HOME");
+		home = find_env_key("HOME");
 		if (!home)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDOUT_FILENO);
@@ -58,6 +58,8 @@ int	builtin_cd(char **argv, t_shell *shell)
 
 int	builtin_exit(char **argv, t_shell *shell)
 {
+	long	exit_code;
+
 	if (argv[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);

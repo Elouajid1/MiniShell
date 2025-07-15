@@ -93,8 +93,6 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
 
-	ac++;
-	av++;
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);

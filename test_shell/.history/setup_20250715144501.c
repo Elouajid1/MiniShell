@@ -39,7 +39,7 @@ void	setup_parent_process(int *prev_fd, int *pipe_fds, bool has_next)
 	}
 }
 
-t_env	*add_env_as_node(char **env)
+t_env	*add_env_as_node(char **env, t_shell *shell)
 {
 	t_env	*new_node;
 
@@ -64,6 +64,7 @@ char	**split_env_line(char *line)
 {
 	char	**res;
 	int		pos;
+	int		len;
 
 	if (!line)
 		return (NULL);
@@ -98,7 +99,7 @@ t_env	*array_to_env(char **env, t_shell *shell)
 			free_array(splited);
 			continue ;
 		}
-		new_node = add_env_as_node(splited);
+		new_node = add_env_as_node(splited, shell);
 		if (!new_node)
 			break ;
 		free_array(splited);
