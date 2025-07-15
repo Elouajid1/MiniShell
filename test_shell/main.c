@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/10 18:49:35 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/14 13:35:13 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,12 @@ int	main_loop(t_shell *shell, char **env)
 
 	(void)env;
 	setup_signals();
+<<<<<<< HEAD
 	shell->interactive = isatty(STDIN_FILENO);
+=======
+	shell->env = array_to_env(env);
+	shell->token = NULL;
+>>>>>>> 0af92a97d55befeeb1d5664cc8c8adea33bd5a8b
 	while (1)
 	{
 		command = readline("minishell$ ");
@@ -81,22 +86,59 @@ int	main_loop(t_shell *shell, char **env)
 			return (0);
 		if (result == 1)
 			continue ;
+<<<<<<< HEAD
 		result = syntax_check_and_expand(shell, command);
 		if (result == 1)
 			continue ;
 		execute_and_cleanup(shell, command);
+=======
+		}
+		if (syntax_errors(shell->token))
+		{
+			free(command);
+			free_tokens(&shell->token);
+			continue ;		
+		}
+		expand(&(shell->token), shell->env);
+		q_rremoval(&shell->token);
+		shell->cmds = parse(&(shell->command), shell->token);
+		// shell->cmds = build_test_commands(shell, env);
+		shell->last_exit_code = execute_commands(shell);
+		g_data.last_exit_status = shell->last_exit_code;
+		// printf("gogo\n");
+		// free_array(shell->cmds->argv);
+		free(command);
+		free_tokens(&shell->token);
+		free_command(&shell->cmds);
+		// free_command(&(shell->command));
+		shell->token = NULL;
+		shell->command = NULL;
+>>>>>>> 0af92a97d55befeeb1d5664cc8c8adea33bd5a8b
 	}
 	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
 {
+<<<<<<< HEAD
 	char	*str;
 	int		pos;
 	char	*path;
 	char	*command;
 	t_shell	*shell;
 
+=======
+	// char *str;
+	int i;
+	// int pos;
+	// char *path;
+	// char *command;
+	t_shell *shell;
+
+	i = 0;
+	(void)ac;
+	(void)av;
+>>>>>>> 0af92a97d55befeeb1d5664cc8c8adea33bd5a8b
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);

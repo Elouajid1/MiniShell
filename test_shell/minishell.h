@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/11 13:33:43 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/13 19:08:36 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ int					syntax_errors(t_token *token);
 int					handle_builtin_logic(t_cmd *cmd, t_shell *shell);
 void				restore_stdio(int backup[2]);
 int					backup_stdio(int backup[2]);
+<<<<<<< HEAD
 void				add_defaults_env(t_env **env, t_shell *shell);
 t_env				*new_env_node(char *key, char *value);
 int					print_list(t_env *env, t_shell *shell);
@@ -231,4 +232,7 @@ char				*get_next_line(int fd);
 t_env				*init_minimal_env(t_shell *shell);
 char				*get_heredoc_expansion(char *str, t_env *env);
 int					env_error_message(char *path);
+=======
+void				q_rremoval(t_token **token);
+>>>>>>> 0af92a97d55befeeb1d5664cc8c8adea33bd5a8b
 #endif

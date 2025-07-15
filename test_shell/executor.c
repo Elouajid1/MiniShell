@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:01:19 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/03 16:01:23 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:06:16 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+
+# include "minishell.h"
 
 extern int	g_last_exit_code;
 
@@ -17,7 +18,7 @@ int	fork_and_execute(char *path, char **argv, char **envp, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
-	char	*tmp;
+	// char	*tmp;
 	void	(*old_sigint)(int);
 
 	old_sigint = signal(SIGINT, handle_sigint_single);
@@ -46,8 +47,13 @@ int	execute_single_command(t_cmd *cmd, t_shell *shell)
 	char	*path;
 	char	**envp;
 	int		status;
+<<<<<<< HEAD
 
 	shell->flag = 0;
+=======
+	
+	g_data.flag = 0;
+>>>>>>> 0af92a97d55befeeb1d5664cc8c8adea33bd5a8b
 	if (!cmd->argv || !cmd->argv[0])
 		return (0);
 	if (is_builtin(cmd->argv[0]))
