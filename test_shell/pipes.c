@@ -37,35 +37,8 @@ void	begin_child_execution(t_cmd *current, int prev_fd, int *pipe_fds,
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	setup_child_process(prev_fd, pipe_fds);
-	setup_redirections(current->redir, shell);
+	setup_redirections(current->redir);
 	execute_child_command(current, shell);
-}
-
-int	process_pipeline_commands(t_cmd *cmds, t_shell *shell)
-{
-	int		prev_fd;
-	int		pipe_fds[2];
-	t_cmd	*current;
-
-	prev_fd = -1;
-	current = cmds;
-	while (current)
-	{
-		if (current->next && pipe(pipe_fds) == -1)
-			return (perror("pipe"), 1);
-		shell->single_pid = fork();
-		if (shell->single_pid == -1)
-			return (perror("fork"), 1);
-		if (shell->single_pid == 0)
-			begin_child_execution(current, prev_fd, pipe_fds, shell);
-		else
-		{
-			shell->pipeline_pids[shell->pipeline_count++] = shell->single_pid;
-			setup_parent_process(&prev_fd, pipe_fds, current->next);
-		}
-		current = current->next;
-	}
-	return (0);
 }
 
 void	execute_child_command(t_cmd *cmd, t_shell *shell)
@@ -77,8 +50,10 @@ void	execute_child_command(t_cmd *cmd, t_shell *shell)
 	if (is_builtin(cmd->argv[0]))
 		exit(execute_builtin(cmd, shell));
 	path = get_executable_path(cmd->argv[0], shell);
-	if (!path)
+	if (!path && shell->flag == 2)
 		exit(handle_command_error(cmd->argv[0]));
+	if (!path && shell->flag == 1)
+		exit(handle_path_error(cmd->argv[0]));
 	envp = env_to_array(shell->env);
 	if (!envp)
 	{

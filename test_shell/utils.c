@@ -77,24 +77,149 @@ char	*find_executable_path(char *cmd, t_shell *shell)
 	return (NULL);
 }
 
-char	*get_executable_path(char *cmd, t_shell *shell)
-{
-	char	*tmp;
+// char *search_in_path(char *cmd, t_shell *shell)
+// {
+// 	char *path_env;
+// 	char *path_copy;
+// 	char *dir;
+// 	char *full_path;
+// 	struct stat st;
+// 	int i, start, len;
+	
+// 	path_env = get_env_value(shell->env, "PATH"); // Your existing function
+// 	if (!path_env)
+// 		return (NULL);
+// 	path_copy = ft_strdup(path_env);
+// 	if (!path_copy)
+// 		return (NULL);
+// 	i = 0;
+// 	start = 0;
+// 	while (path_copy[i])
+// 	{
+// 		if (path_copy[i] == ':' || path_copy[i + 1] == '\0')
+// 		{
+// 			len = (path_copy[i] == ':') ? i - start : i - start + 1;
+// 			if (len == 0)
+// 			{
+// 				start = i + 1;
+// 				i++;
+// 				continue;
+// 			}
+// 			dir = malloc(len + 1);
+// 			if (!dir)
+// 			{
+// 				free(path_copy);
+// 				return (NULL);
+// 			}
+// 			ft_strncpy(dir, &path_copy[start], len); // Use your ft_strncpy
+// 			dir[len] = '\0';
+// 			full_path = malloc(ft_strlen(dir) + ft_strlen(cmd) + 2);
+// 			if (!full_path)
+// 			{
+// 				free(dir);
+// 				free(path_copy);
+// 				return (NULL);
+// 			}	
+// 			ft_strcpy(full_path, dir);
+// 			ft_strcat(full_path, "/");
+// 			ft_strcat(full_path, cmd);
+// 			if (stat(full_path, &st) == 0 && S_ISREG(st.st_mode) && access(full_path, X_OK) == 0)
+// 			{
+// 				free(dir);
+// 				free(path_copy);
+// 				return (full_path);
+// 			}	
+// 			free(full_path);
+// 			free(dir);
+// 			start = i + 1;
+// 		}
+// 		i++;
+// 	}
+	
+// 	free(path_copy);
+// 	return (NULL);
+// }
 
-	if (!cmd)
+int	count_dots(char *cmd, t_shell *shell)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while(cmd[i])
+	{
+		if (cmd[i] == '.')
+			count++;
+		if (cmd[i + 1] == '.' && cmd[i] == '.')
+			return (-1);
+		i++;
+	}
+	if (shell->cmds->argv[1])
+	{
+		if (shell->cmds->argv[1][0] == '.')
+			count++;
+	}
+	return (count);
+}
+
+char	*handle_dot_case(t_shell *shell, char *cmd)
+{
+	char	*full_path;
+
+	if (cmd[0] == ':')
+	{
+		shell->flag = 0;
 		return (NULL);
+	}
+	if (count_dots(cmd, shell) > 1)
+	{
+		ft_putstr_fd("minishell: .: .: is a directory\n", STDERR_FILENO);
+		shell->flag = 3;
+		return (NULL);
+	}
+	if (count_dots(cmd, shell) == 1)
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n", STDERR_FILENO);
+		ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR_FILENO);
+		shell->flag = -2;
+		return (NULL);
+	}
+	full_path = search_in_path(cmd, shell);
+	if (!full_path)
+	{
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": command not found\n", 20);
+		shell->flag = 2;
+		return (NULL);
+	}
+	return (full_path);
+}
+
+char *get_executable_path(char *cmd, t_shell *shell)
+{
+	char *full_path;
+	
+	shell->flag = 0;
+	if (!cmd || !cmd[0])
+	{
+		shell->flag = 1;
+		return (NULL);
+	}
 	if (ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
+		if (access(cmd, F_OK) == -1)
+			return (no_such_file_error(cmd, shell));
+		if (access(cmd, X_OK) == -1)
+			return (permission_error(cmd, shell));
+		full_path = ft_strdup(cmd);
+		if (!full_path)
 		{
+			write(2, "Memory allocation failed\n", 25);
 			shell->flag = 1;
 			return (NULL);
 		}
+		return (full_path);
 	}
-	tmp = find_executable_path(cmd, shell);
-	if (!tmp)
-		shell->flag = 2;
-	return (tmp);
+	return (handle_dot_case(shell, cmd));
 }

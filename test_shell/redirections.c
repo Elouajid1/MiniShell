@@ -58,7 +58,7 @@ int	handle_input_redirection(char *file)
 	return (0);
 }
 
-int	setup_redirections(t_redir *redir, t_shell *shell)
+int	setup_redirections(t_redir *redir)
 {
 	t_redir	*current;
 
@@ -70,7 +70,10 @@ int	setup_redirections(t_redir *redir, t_shell *shell)
 		if (current->type == R_INPUT)
 			handle_input_redirection(current->file);
 		else if (current->type == R_HEREDOC)
-			handle_heredoc(current->file, shell);
+		{
+			dup2(current->heredoc_fd, STDIN_FILENO);
+			close(current->heredoc_fd);
+		}
 		else if (current->type == R_OUTPUT)
 			handle_output_redirection(current->file, false);
 		else if (current->type == R_APPEND)

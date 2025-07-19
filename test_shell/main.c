@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/19 10:43:38 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:48:57 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	main(int ac, char **av, char **envp)
 	main_loop(shell, envp);
 	cleanup_shell(shell, true);
 	printf("exit\n");
-	// free_env_list(shell->env);
 	status = shell->last_exit_code;
 	free(shell);
 	return (status);

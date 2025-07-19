@@ -27,6 +27,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <sys/stat.h>
 # define BUFFER_SIZE 42
 
 typedef enum s_redir_type
@@ -58,6 +59,7 @@ typedef struct s_redir
 {
 	int				type;
 	char			*file;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -153,8 +155,9 @@ void				setup_child_process(int prev_fd, int pipe_fds[2]);
 int					handle_fork_and_exec(t_cmd *current, int prev_fd,
 						int *pipe_fds, t_shell *shell);
 int					process_pipeline_commands(t_cmd *cmds, t_shell *shell);
-int					handle_heredoc(char *delimiter, t_shell *shell);
+int					handle_heredoc(char *delimiter, t_shell *shell, int *fd);
 int					execute_builtin(t_cmd *cmd, t_shell *shell);
+int					process_heredocs(t_cmd *cmds, t_shell *shell);
 
 /* ************************************************************************** */
 /*                              Free FUNCTIONS                                */
@@ -197,6 +200,11 @@ void				signal_print_newline(int signal);
 void				set_signals_noninteractive(void);
 void				ignore_sigquit(void);
 
+
+char				*permission_error(char *cmd, t_shell *shell);
+char				*no_such_file_error(char *cmd, t_shell *shell);
+
+
 /* ************************************************************************** */
 /*                              UTILITY FUNCTIONS                             */
 /* ************************************************************************** */
@@ -204,7 +212,7 @@ void				ignore_sigquit(void);
 bool				is_builtin(char *cmd);
 char				*get_executable_path(char *cmd, t_shell *shell);
 void				free_array(char **split);
-int					setup_redirections(t_redir *redir, t_shell *shell);
+int					setup_redirections(t_redir *redir);
 char				*get_env_value(t_env *env, char *key);
 t_env				*create_env_node(char *key, char *value);
 void				add_env_node(t_env **env, t_env *new_node);
@@ -238,4 +246,13 @@ t_env				*init_minimal_env(t_shell *shell);
 char				*get_heredoc_expansion(char *str, t_env *env);
 int					env_error_message(char *path);
 int					check_for_empty(char **splited);
+char				*ft_strncpy(char *dest, char *src, unsigned int n);
+char				*ft_strcpy(char *dest, char *src);
+char				*ft_strcat(char *dest, char *src);
+int					return_error_code(t_shell *shell);
+int					is_executable(char *path);
+char				*extract_directory(char *path_copy, int start, int len);
+char				*check_directory(char *dir, char *cmd);
+char				*create_full_path(char *dir, char *cmd);
+char				*search_in_path(char *cmd, t_shell *shell);
 #endif

@@ -21,7 +21,7 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 	{
 		if (backup_stdio(backup_fds) == -1)
 			return (1);
-		if (setup_redirections(cmd->redir, shell) == -1)
+		if (setup_redirections(cmd->redir) == -1)
 		{
 			restore_stdio(backup_fds);
 			return (1);
