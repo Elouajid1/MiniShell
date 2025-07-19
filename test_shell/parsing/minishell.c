@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:40:27 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/12 14:00:53 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:23:11 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 void	expand(t_token **token, t_env *env)
 {
 	t_token	*head;
+	char	*expanded;
 
 	head = (*token);
 	while (head)
 	{
 		if (head->type == T_WORD)
-			head->value = expand_str(head->value, env);
+		{
+			expanded = expand_str(head->value, env);
+			free(head->value);
+			head->value = expanded;
+		}
 		head = head->next;
 	}
 }

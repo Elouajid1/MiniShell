@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/10 18:49:35 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:43:38 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	handle_empty_or_tokenize(t_shell *shell, char *command)
 		free(command);
 		return (1);
 	}
+	free(cmd_array);
 	return (2);
 }
 
@@ -64,7 +65,8 @@ static void	execute_and_cleanup(t_shell *shell, char *command)
 	free_command(&(shell->cmds));
 	cleanup_shell(shell, false);
 	shell->token = NULL;
-	command = NULL;
+	shell->cmds = NULL;
+	// command = NULL;
 }
 
 int	main_loop(t_shell *shell, char **env)
@@ -96,6 +98,7 @@ int	main_loop(t_shell *shell, char **env)
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	*shell;
+	int		status;
 
 	ac++;
 	av++;
@@ -117,7 +120,8 @@ int	main(int ac, char **av, char **envp)
 	main_loop(shell, envp);
 	cleanup_shell(shell, true);
 	printf("exit\n");
-	free_env_list(shell->env);
+	// free_env_list(shell->env);
+	status = shell->last_exit_code;
 	free(shell);
-	return (shell->last_exit_code);
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:54:55 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/14 13:34:12 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:31:32 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*rm_quotes(char *str)
 	j = 0;
 	single_q = 0;
 	double_q = 0;
+	if (!str)
+		return (NULL);
 	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[i])
 	{
@@ -58,7 +60,7 @@ char	*rm_quotes(char *str)
 		return (NULL);
 	}
 	res[j] = 0;
-	return (res);
+	return (free(str),res);
 }
 
 void	q_rremoval(t_token **token)
@@ -232,6 +234,8 @@ char	*expand_str(char *str, t_env *env)
 	single_q = 0;
 	double_q = 0;
 	res = ft_strdup("");
+	if (!res)
+		return (NULL);
 	var = NULL;
 	value = NULL;
 	while (str[i])
@@ -241,23 +245,36 @@ char	*expand_str(char *str, t_env *env)
 		{
 			i++;
 			if (!str[i])
+			{
+				free(res);
 				return (NULL);
+			}
+				
 			if (str[i] && str[i] == '$')
 			{
 				tmp = res;
 				value = ft_itoa(getpid());
-				res = ft_strjoin(res, value);
-				free(value);
+				res = ft_strjoin(tmp, value);
 				free(tmp);
+				free(value);
+				if (!res)
+					return (NULL);
 				i++;
 			}
 			else if (str[i] && str[i] == '?')
 			{
 				tmp = res;
 				value = ft_itoa(g_last_exit_code);
-				res = ft_strjoin(res, value);
-				free(value);
+				if (!value)
+				{
+					free(tmp);
+					return (NULL);
+				}
+				res = ft_strjoin(tmp, value);
 				free(tmp);
+				free(value);
+				if (!res)
+					return (NULL);
 				i++;
 			}
 			else
@@ -268,21 +285,29 @@ char	*expand_str(char *str, t_env *env)
 				value = ft_substr(str, j, i - j);
 				finded = find_env_node(env, value);
 				if (!finded)
+				{
+					free(value);
+					free(res);
 					return (NULL);
+				}
 				var = finded->value;
 				if (!var)
 					var = "";
 				tmp = res;
-				res = ft_strjoin(res, var);
+				res = ft_strjoin(tmp, var);
 				free(tmp);
 				free(value);
+				if (!res)
+					return (NULL);
 			}
 		}
 		else if (str[i] == '$' && single_q == 1)
 		{
 			tmp = res;
-			res = ft_strjoin(res, "$");
+			res = ft_strjoin(tmp, "$");
 			free(tmp);
+			if (!res)
+				return (NULL);
 			i++;
 		}
 		else
@@ -290,13 +315,17 @@ char	*expand_str(char *str, t_env *env)
 			temp[0] = str[i];
 			temp[1] = '\0';
 			tmp = res;
-			res = ft_strjoin(res, temp);
+			res = ft_strjoin(tmp, temp);
 			free(tmp);
+			if (!res)
+				return (NULL);
 			i++;
 		}
 	}
 	return (res);
 }
+
+
 
 // int main()
 // {
@@ -306,3 +335,4 @@ char	*expand_str(char *str, t_env *env)
 // 	// char *res = rm_quotes(str);
 // 	printf("%s\n", var);
 // }
+

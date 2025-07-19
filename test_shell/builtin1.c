@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtin1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:56:59 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/14 16:57:03 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:25:23 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 int	handle_builtin_logic(t_cmd *cmd, t_shell *shell)

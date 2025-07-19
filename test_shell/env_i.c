@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   env_i.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 13:15:06 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/13 13:15:10 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:25:43 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*new_env(const char *key, const char *value, int show_env,

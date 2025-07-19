@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtin2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 10:48:37 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/06/15 10:48:41 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:25:29 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	is_builtin(char *cmd)

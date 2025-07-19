@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   export_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:16:52 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/15 11:16:55 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:25:53 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	print_export_error(char *arg)

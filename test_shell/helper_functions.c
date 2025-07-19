@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-aid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:25:15 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/15 11:25:18 by moel-aid         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:26:00 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "minishell.h"
 
 int	count_env_with_values(t_env *env)

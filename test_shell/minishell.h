@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/11 13:33:43 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/17 15:10:49 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,13 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+// typedef struct s_garbage
+// {
+// 	char *path;
+// 	next
+	
+// }				t_garabage;
+
 typedef struct s_shell
 {
 	t_env			*env;
@@ -86,8 +93,6 @@ typedef struct s_shell
 	int				last_status;
 	bool			printed;
 	int				i;
-	// int				d_quotes;
-	// int				s_quotes;
 	int				count;
 	int				last_exit_code;
 	bool			interactive;
