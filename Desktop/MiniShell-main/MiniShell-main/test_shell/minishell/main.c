@@ -81,7 +81,6 @@ int	main_loop(t_shell *shell, char **env)
 	shell->interactive = isatty(STDIN_FILENO);
 	while (1)
 	{
-		signal(SIGQUIT, sigquit_handler);
 		command = NULL;
 		shell->token = NULL;
 		shell->cmds = NULL;

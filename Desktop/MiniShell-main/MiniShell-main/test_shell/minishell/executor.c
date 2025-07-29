@@ -134,6 +134,6 @@ int	execute_commands(t_shell *shell)
 	}
 	else
 		exit_status = execute_pipeline(shell->cmds, shell);
-	// shell->last_exit_code = exit_status;
+	shell->last_exit_code = exit_status;
 	return (exit_status);
 }
