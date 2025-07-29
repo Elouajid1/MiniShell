@@ -73,6 +73,8 @@ int	has_only_n(char *arg)
 	int	i;
 
 	i = 1;
+	if (ft_strlen(arg) == 1 && arg[0] == '-')
+		return (1);
 	if (arg[0] != '-')
 		return (1);
 	if (arg[0] == '-')

@@ -56,5 +56,11 @@ void	handle_sigint_prompt(int sig)
 void	sigquit_handler(int sig)
 {
 	g_last_exit_code = 131;
+	if (isatty(STDIN_FILENO))
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 	sig++;
 }

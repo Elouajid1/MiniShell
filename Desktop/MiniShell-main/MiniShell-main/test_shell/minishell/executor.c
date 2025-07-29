@@ -134,9 +134,6 @@ int	execute_commands(t_shell *shell)
 	}
 	else
 		exit_status = execute_pipeline(shell->cmds, shell);
-<<<<<<< HEAD
-	// shell->last_exit_code = exit_status;
-=======
->>>>>>> c666b49 (up)
+	shell->last_exit_code = exit_status;
 	return (exit_status);
 }
