@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 15:58:31 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/18 10:25:34 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:30:40 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	execute_builtin(t_cmd *cmd, t_shell *shell)
 	int	status;
 	int	backup_fds[2];
 
+	status = 0;
 	if (cmd->redir)
 	{
 		if (backup_stdio(backup_fds) == -1)

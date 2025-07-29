@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:46:20 by isallali          #+#    #+#             */
-/*   Updated: 2025/07/22 11:26:47 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:03:32 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ char	**ft_split1(char *s, char c)
 		}
 		s += slen(s, c);
 	}
-	strs[i] = 0;
+	strs[i] = NULL;
 	return (strs);
 }

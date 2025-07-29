@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:01:19 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/18 10:25:49 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:31:23 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	fork_and_execute(char *path, char **argv, char **envp, t_shell *shell)
 	int		status;
 	void	(*old_sigint)(int);
 
+	status = 0;
 	old_sigint = signal(SIGINT, handle_sigint_single);
 	pid = fork();
 	if (pid == -1)
@@ -51,6 +52,7 @@ int	execute_single_command(t_cmd *cmd, t_shell *shell)
 
 	shell->flag = 0;
 	path = NULL;
+	status = 0;
 	if (cmd->argv && cmd->argv[0])
 	{
 		if (is_builtin(cmd->argv[0]))
@@ -117,6 +119,7 @@ int	execute_commands(t_shell *shell)
 {
 	int	exit_status;
 
+	exit_status = 0;
 	if (!shell || !shell->cmds)
 		return (EXIT_FAILURE);
 	if (process_heredocs(shell->cmds, shell) == -1)
@@ -131,6 +134,6 @@ int	execute_commands(t_shell *shell)
 	}
 	else
 		exit_status = execute_pipeline(shell->cmds, shell);
-	shell->last_exit_code = exit_status;
+	// shell->last_exit_code = exit_status;
 	return (exit_status);
 }
