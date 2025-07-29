@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:54:55 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/22 11:26:39 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:51:27 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,6 @@ char	*expand_exit(char *res)
 	res = ft_strjoin(tmp, value);
 	free(tmp);
 	free(value);
-	if (!res)
-		return (NULL);
-	return (res);
-}
-
-char	*expand_zero(char *res)
-{
-	char *tmp;
-
-	tmp = res;
-	res = ft_strjoin(tmp, "minishell");
-	free(tmp);
 	if (!res)
 		return (NULL);
 	return (res);

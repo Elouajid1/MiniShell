@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/29 03:49:39 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:49:50 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,115 +16,11 @@
 
 int			g_last_exit_code = 0;
 
-int	check_sp(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		if (str[i] == 32)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	count_fields(char **strs, t_env *env)
-{
-	char	*expanded;
-	char	**fields;
-	int		count;
-	int		i;
-
-	i = 0;
-	count = 0;
-	if (!strs)
-		return (0);
-	while (strs[i])
-	{
-		if (ft_strcmp("<<", strs[i]) == 0)
-		{
-			count++;
-			i++;
-		}
-		else
-		{
-			fields = NULL;
-			expanded = expand_str(strs[i], env);
-			if (check_sp(expanded))
-			{
-				fields = ft_split1(expanded, 32);
-				count += argv_len(fields);
-			}
-			else
-				count++;
-			free(expanded);
-			free_array(fields);
-			i++;
-		}
-	}
-	return (count);
-}
-
-char	**expander(char **strs, t_env *env)
-{
-	char	**res;
-	char	*expanded;
-	char	**tmp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	res = malloc(sizeof(char *) * (count_fields(strs, env) + 1));
-	if (!res)
-		return (NULL);
-	while (strs[i])
-	{
-		if (ft_strcmp("<<", strs[i]) == 0)
-		{
-			res[j++] = ft_strdup(strs[i++]);
-			if (strs[i])
-				res[j++] = ft_strdup(strs[i++]);
-			continue ;
-		}
-		else
-		{
-			expanded = expand_str(strs[i], env);
-			if (check_sp(expanded))
-			{
-				tmp = ft_split1(expanded, 32);
-				char **iter = tmp;
-				while (*iter)
-				{
-					res[j] = ft_strdup(*iter);
-					j++;
-					iter++;
-				}
-				free_array(tmp);
-			}
-			else
-			{
-				res[j] = ft_strdup(expanded);
-				j++;
-			}
-			free(expanded);
-			i++;
-		}
-	}
-	res[j] = NULL;
-	return (res);
-}
-
 static int	handle_empty_or_tokenize(t_shell *shell, char *command)
 {
 	char	**cmd_array;
 	char	**splitted;
 
-	shell->token = NULL;
 	if (*command == '\0')
 	{
 		free(command);
