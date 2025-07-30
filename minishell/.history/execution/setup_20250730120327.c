@@ -93,7 +93,6 @@ t_env	*array_to_env(char **env, t_shell *shell)
 	head = NULL;
 	tail = NULL;
 	shell->i = -1;
-	shell->env_flag = 0;
 	while (env[++shell->i])
 	{
 		splited = split_env_line(env[shell->i]);

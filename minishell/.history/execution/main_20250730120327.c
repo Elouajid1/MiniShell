@@ -120,8 +120,8 @@ int	main(int ac, char **av, char **envp)
 		shell->env = init_minimal_env(shell);
 		shell->last_exit_code = 0;
 	}
-	else
-		shell->env = array_to_env(envp, shell);
+	shell->env_flag = 0;
+	shell->env = array_to_env(envp, shell);
 	shell->interactive = isatty(STDIN_FILENO);
 	main_loop(shell, envp);
 	cleanup_shell(shell, true);

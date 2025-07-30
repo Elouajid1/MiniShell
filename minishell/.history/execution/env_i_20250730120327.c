@@ -83,7 +83,7 @@ static t_env	*setup_env_chain(char *cwd)
 	t_env	*underscore;
 
 	pwd = new_env("PWD", cwd, 1, 1);
-	shlvl = new_env("SHLVL", "1", 1, 1);
+	shlvl = new_env("SHLVL", "2", 1, 1);
 	oldpwd = new_env("OLDPWD", NULL, 0, 1);
 	underscore = new_env("_", "/usr/bin/env", 1, 0);
 	if (!pwd || !shlvl || !oldpwd || !underscore)
