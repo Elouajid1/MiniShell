@@ -17,10 +17,9 @@ extern int	g_last_exit_code;
 int	fork_and_execute(char *path, char **argv, char **envp, t_shell *shell)
 {
 	pid_t	pid;
-	int		status;
 	void	(*old_sigint)(int);
 
-	status = 0;
+	shell->exit_status = 0;
 	old_sigint = signal(SIGINT, handle_sigint_single);
 	pid = fork();
 	if (pid == -1)
@@ -38,10 +37,10 @@ int	fork_and_execute(char *path, char **argv, char **envp, t_shell *shell)
 		}
 	}
 	shell->single_pid = pid;
-	waitpid(pid, &status, 0);
+	waitpid(pid, &shell->exit_status, 0);
 	shell->single_pid = 0;
 	signal(SIGINT, old_sigint);
-	return (handle_single_child_signals(status));
+	return (handle_single_child_signals(shell->exit_status));
 }
 
 int	execute_single_command(t_cmd *cmd, t_shell *shell)

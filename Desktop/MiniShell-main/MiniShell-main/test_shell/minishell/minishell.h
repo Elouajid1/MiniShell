@@ -119,6 +119,7 @@ typedef struct s_shell
 	int				quote_flag;
 	int				newline;
 	char			*deli;
+	int				exit_status;
 }					t_shell;
 
 /* ************************************************************************** */

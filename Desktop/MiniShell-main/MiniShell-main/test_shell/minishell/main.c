@@ -76,7 +76,6 @@ int	main_loop(t_shell *shell, char **env)
 
 	(void)env;
 	setup_signals();
-	shell->interactive = isatty(STDIN_FILENO);
 	while (1)
 	{
 		command = NULL;
@@ -110,7 +109,6 @@ int	main(int ac, char **av, char **envp)
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);
-	shell->shell_lvl = 1;
 	if (!envp || !envp[0])
 	{
 		shell->env = NULL;
@@ -120,6 +118,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	shell->env_flag = 0;
 	shell->env = array_to_env(envp, shell);
+	shell->interactive = isatty(STDIN_FILENO);
 	main_loop(shell, envp);
 	cleanup_shell(shell, true);
 	printf("exit\n");

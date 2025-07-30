@@ -96,6 +96,7 @@ t_env	*init_minimal_env(t_shell *shell)
 {
 	char	cwd[1024];
 
+	shell->shell_lvl = 1;
 	(void)shell;
 	if (!getcwd(cwd, sizeof(cwd)))
 		return (NULL);
