@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 23:36:35 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/22 11:07:05 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:19:54 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,14 @@ char	*expand_value(char *res, char *str, int *i, t_env *env)
 	if (str[*i] >= 48 && str[*i] <= 57)
 		(*i)++;
 	else
-	{
 		while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 			(*i)++;
-	}
 	value = ft_substr(str, j, *i - j);
 	finded = find_env_node(env, value);
 	if (!finded || !finded->value)
 		var = "";
 	else
 		var = finded->value;
-	if (!var)
-		var = "";
 	tmp = res;
 	res = ft_strjoin(tmp, var);
 	free(tmp);

@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:17 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/21 23:41:34 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:28:17 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,43 @@ t_cmd	*parse(t_cmd **comm, t_token *token)
 		token = token->next;
 	}
 	return (head);
+}
+
+char	**expander(char **strs, t_env *env)
+{
+	t_args	*args;
+	char	**result;
+
+	args = malloc(sizeof(t_args));
+	if (!init_args(args, strs, env))
+	{
+		free(args);
+		return (NULL);
+	}
+	while (strs[args->i])
+	{
+		if (ft_strcmp("<<", strs[args->i]) == 0)
+		{
+			check_heredoc(args);
+			continue ;
+		}
+		else
+			fields_expand(args, env);
+	}
+	args->res[args->j] = NULL;
+	result = args->res;
+	free(args);
+	return (result);
+}
+
+char	*expand_zero(char *res)
+{
+	char	*tmp;
+
+	tmp = res;
+	res = ft_strjoin(tmp, "minishell");
+	free(tmp);
+	if (!res)
+		return (NULL);
+	return (res);
 }

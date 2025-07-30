@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 15:57:11 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/20 21:45:34 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:32:17 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,6 @@ void	cleanup_shell(t_shell *shell, bool flag)
 		free_cmd_list(shell->cmds);
 	if (shell->env && flag)
 		free_env_list(shell->env);
+	if (shell->args)
+		free_args(shell->args);
 }

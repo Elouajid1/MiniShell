@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:06:04 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/21 16:20:15 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:32:12 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,13 @@ void	free_command(t_cmd **comm)
 		free(*comm);
 		(*comm) = tmp;
 	}
+}
+
+void	free_args(t_args *args)
+{
+	if (args->res)
+		free_array(args->res);
+	if (args->strs)
+		free_array(args->res);
+	free(args);
 }

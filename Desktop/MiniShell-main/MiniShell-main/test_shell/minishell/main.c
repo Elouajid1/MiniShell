@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/29 15:49:50 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:29:23 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,26 @@ static int	handle_empty_or_tokenize(t_shell *shell, char *command)
 	char	**splitted;
 
 	if (*command == '\0')
-	{
-		free(command);
-		return (1);
-	}
+		return (free(command), 1);
 	add_history(command);
 	splitted = ft_split1(command, 32);
 	cmd_array = expander(splitted, shell->env);
 	if (!cmd_array)
 	{
 		free(command);
+		free(shell->args);
+		free_array(splitted);
 		return (0);
 	}
 	tokenize(&(shell->token), cmd_array);
 	if (shell->token == NULL)
 	{
 		free_array(cmd_array);
+		free_array(splitted);
 		free(command);
 		return (1);
 	}
-	free_array(splitted);
-	free_array(cmd_array);
-	return (2);
+	return (free_array(splitted), free_array(cmd_array), 2);
 }
 
 static int	syntax_check_and_expand(t_shell *shell, char *command)
@@ -55,7 +53,6 @@ static int	syntax_check_and_expand(t_shell *shell, char *command)
 		free_cmd_list(shell->cmds);
 		return (1);
 	}
-	// expand(&(shell->token), shell->env);
 	q_rremoval(&(shell->token), shell);
 	return (2);
 }
@@ -69,6 +66,7 @@ static void	execute_and_cleanup(t_shell *shell, char *command)
 	cleanup_shell(shell, false);
 	shell->token = NULL;
 	shell->cmds = NULL;
+	shell->args = NULL;
 }
 
 int	main_loop(t_shell *shell, char **env)
@@ -84,12 +82,10 @@ int	main_loop(t_shell *shell, char **env)
 		command = NULL;
 		shell->token = NULL;
 		shell->cmds = NULL;
+		shell->args = NULL;
 		command = readline("minishell$ ");
 		if (!command)
-		{
-			shell->last_exit_code = 0;
-			break ;
-		}
+			return (shell->last_exit_code = 0, 0);
 		result = handle_empty_or_tokenize(shell, command);
 		if (result == 0)
 			return (0);

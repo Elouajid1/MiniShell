@@ -6,7 +6,7 @@ SRCS    = main.c utils.c tools.c signals.c free.c executor.c redirections.c env.
 		setup.c pipes.c builtin1.c builtin2.c builtin3.c single_command_signal.c helper_functions.c path_functions.c\
 		error_message.c heredoc.c env_i.c heredoc_signals.c heredoc_utils.c cpy.c error_message1.c\
 		parsing/expand.c parsing/free.c parsing/parse.c parsing/tokenize.c parsing/ft_split.c parsing/minishell.c parsing/utils.c\
-		parsing/init.c parsing/utils2.c
+		parsing/init.c parsing/utils2.c parsing/tools.c
 OBJS    = $(SRCS:.c=.o)
 INCLUDE = -lreadline -lncurses -lhistory
 

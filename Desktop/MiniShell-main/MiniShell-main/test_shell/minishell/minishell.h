@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/22 11:05:01 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:31:59 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,15 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef enum s_redir_type
+typedef struct s_args
+{
+	char			**strs;
+	char			**res;
+	int				i;
+	int				j;
+}					t_args;
+
+typedef enum e_redir_type
 {
 	R_OUTPUT,
 	R_INPUT,
@@ -90,6 +98,7 @@ typedef struct s_shell
 	t_env			*env;
 	t_cmd			*cmds;
 	t_token			*token;
+	t_args			*args;
 	int				status;
 	int				last_status;
 	bool			printed;
@@ -141,6 +150,14 @@ int					is_double_operator(char c, char next);
 int					handle_q(char *s, int *i);
 int					handle_op(char *s, int *i);
 int					count_words(char *s, char c);
+char				*expand_zero(char *res);
+char				**expander(char **strs, t_env *env);
+void				fields_expand(t_args *args, t_env *env);
+int					count_fields(char **strs, t_env *env);
+int					check_sp(char *str);
+void				check_heredoc(t_args *args);
+int					init_args(t_args *args, char **strs, t_env *env);
+void				free_args(t_args *args);
 
 /* ************************************************************************** */
 /*                              BUILT IN FUNCTIONS                            */
