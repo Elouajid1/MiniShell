@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:08:38 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 10:52:15 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:52:52 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include </usr/include/readline/readline.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -119,13 +120,19 @@ typedef struct s_shell
 	int				newline;
 	char			*deli;
 	int				exit_status;
+	int				sigint;
+	char			*command;
+	int				interepted;
+	int				heredoc;
+	int				line_count;
+	char			*expanded_line;
 }					t_shell;
 
 /* ************************************************************************** */
 /*                              Parsing FUNCTIONS                             */
 /* ************************************************************************** */
 
-char				*expand_str(char *str, t_env *env);
+char				*expand_str(char *str, t_shell *shell);
 char				*rm_quotes(char *str);
 void				expand(t_token **token, t_env *env);
 void				tokenize(t_token **token, char **strs);
@@ -151,14 +158,15 @@ int					handle_q(char *s, int *i);
 int					handle_op(char *s, int *i);
 int					count_words(char *s, char c);
 char				*expand_zero(char *res);
-char				**expander(char **strs, t_env *env);
-void				fields_expand(t_args *args, t_env *env);
-int					count_fields(char **strs, t_env *env);
+char				**expander(char **strs, t_shell *shell);
+void				fields_expand(t_args *args, t_shell *shell);
+int					count_fields(char **strs, t_shell *shell);
 int					check_sp(char *str);
 void				check_heredoc(t_args *args);
-int					init_args(t_args *args, char **strs, t_env *env);
+int					init_args(t_args *args, char **strs, t_shell *shell);
 void				free_args(t_args *args);
-
+char				*rm_deli(char *str);
+int					q_handle(char c, int *double_q, int *single_q);
 /* ************************************************************************** */
 /*                              BUILT IN FUNCTIONS                            */
 /* ************************************************************************** */
@@ -234,6 +242,7 @@ void				set_signals_interactive(void);
 void				signal_print_newline(int signal);
 void				set_signals_noninteractive(void);
 void				ignore_sigquit(void);
+void				heredoc_sigint_handler(int sig);
 
 /* ************************************************************************** */
 /*                              ERROR FUNCTIONS                             */
@@ -247,12 +256,15 @@ int					handle_pipe_creation(t_cmd *current, int *pipe_fds);
 int					handle_path_error(char *cmd_name);
 int					error(char *str);
 int					syntax_errors(t_token *token);
-int					env_error_message(char *path);
+int					env_error_message(char *path, t_shell *shell);
 int					return_error_code(t_shell *shell);
 int					print_pwd_error(char *option);
 int					print_cd_error(void);
 char				*print_dot_error(t_shell *shell);
 char				*print_single_dot_error(t_shell *shell);
+void				print_heredoc_error(t_shell *shell);
+int					print_eof_error(void);
+int					print_exit_error(char *cmd);
 
 /* ************************************************************************** */
 /*                              UTILITY FUNCTIONS                             */
@@ -260,6 +272,7 @@ char				*print_single_dot_error(t_shell *shell);
 
 bool				is_builtin(char *cmd);
 char				*get_executable_path(char *cmd, t_shell *shell);
+void				count_heredoc(t_redir *redir, t_shell *shell);
 void				free_array(char **split);
 int					setup_redirections(t_redir *redir);
 char				*get_env_value(t_env *env, char *key);
@@ -299,4 +312,11 @@ char				*create_full_path(char *dir, char *cmd);
 char				*search_in_path(char *cmd, t_shell *shell);
 t_shell				*get_shell_instance(t_shell *new_shell);
 void				print_echo(char **argv, int *newline, t_shell *shell);
+void				set_pointers(t_shell *shell);
+int					handle_heredoc_child(char *delimiter,
+						t_shell *shell);
+int					handle_heredoc_parent(int status, int *heredoc_fd,
+						t_shell *shell);
+int					heredoc_loop(char *line, char *delimiter,
+						t_shell *shell, int fd);
 #endif

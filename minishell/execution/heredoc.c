@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 17:37:29 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 11:01:41 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:35:22 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,16 @@ char	*evaluate_heredoc_line(char *line, t_shell *shell, char *delimiter)
 	return (NULL);
 }
 
-void	heredoc_loop(char *line, char *delimiter, t_shell *shell, int fd)
+int	heredoc_loop(char *line, char *delimiter, t_shell *shell, int fd)
 {
-	char	*expanded_line;
-
-	setup_signals();
 	shell->deli = rm_quotes(delimiter);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
-			printf("\n");
+			if (shell->line_count == 0)
+				return (print_eof_error());
 			break ;
 		}
 		if (ft_strcmp(shell->deli, line) == 0)
@@ -56,41 +54,35 @@ void	heredoc_loop(char *line, char *delimiter, t_shell *shell, int fd)
 			free(line);
 			break ;
 		}
-		expanded_line = evaluate_heredoc_line(line, shell, delimiter);
-		if (expanded_line)
-			ft_putendl_fd(expanded_line, fd);
+		shell->expanded_line = evaluate_heredoc_line(line, shell, delimiter);
+		if (shell->expanded_line)
+			ft_putendl_fd(shell->expanded_line, fd);
 		free(line);
-		if (expanded_line != line)
-			free(expanded_line);
+		if (shell->expanded_line != line)
+			free(shell->expanded_line);
+		shell->line_count++;
 	}
 	free(shell->deli);
+	return (0);
 }
 
 int	handle_heredoc(char *delimiter, t_shell *shell, int *heredoc_fd)
 {
-	char	*line;
-	char	*tmp_file;
-	int		write_fd;
+	pid_t	pid;
+	int		status;
 
-	line = NULL;
-	tmp_file = "/tmp/minishell_heredoc";
-	write_fd = open(tmp_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (write_fd == -1)
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	pid = fork();
+	if (pid == -1)
 	{
-		perror("open");
+		perror("fork");
 		return (-1);
 	}
-	heredoc_loop(line, delimiter, shell, write_fd);
-	close(write_fd);
-	*heredoc_fd = open(tmp_file, O_RDONLY);
-	if (*heredoc_fd == -1)
-	{
-		perror("open");
-		unlink(tmp_file);
-		return (-1);
-	}
-	unlink(tmp_file);
-	return (0);
+	if (pid == 0)
+		handle_heredoc_child(delimiter, shell);
+	waitpid(pid, &status, 0);
+	return (handle_heredoc_parent(status, heredoc_fd, shell));
 }
 
 int	process_heredocs(t_cmd *cmds, t_shell *shell)
@@ -99,6 +91,7 @@ int	process_heredocs(t_cmd *cmds, t_shell *shell)
 	t_redir	*redir;
 	int		fd;
 
+	count_heredoc(cmds->redir, shell);
 	current = cmds;
 	while (current)
 	{
@@ -107,8 +100,10 @@ int	process_heredocs(t_cmd *cmds, t_shell *shell)
 		{
 			if (redir->type == R_HEREDOC)
 			{
-				if (handle_heredoc(redir->file, shell, &fd) == -1)
-					return (-1);
+				if (shell->interepted)
+					return (130);
+				if (handle_heredoc(redir->file, shell, &fd) == 130)
+					return (130);
 				redir->heredoc_fd = fd;
 			}
 			redir = redir->next;

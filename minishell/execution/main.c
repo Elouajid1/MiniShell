@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 11:07:54 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 11:09:08 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:53:37 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	handle_empty_or_tokenize(t_shell *shell, char *command)
 		return (free(command), 1);
 	add_history(command);
 	splitted = ft_split1(command, 32);
-	cmd_array = expander(splitted, shell->env);
+	cmd_array = expander(splitted, shell);
 	if (!cmd_array)
 	{
 		free(command);
@@ -49,6 +49,7 @@ static int	syntax_check_and_expand(t_shell *shell, char *command)
 		free(command);
 		free_tokens(&(shell->token));
 		free_cmd_list(shell->cmds);
+		g_last_exit_code = 2;
 		return (1);
 	}
 	if (q_rremoval(&(shell->token)))
@@ -63,10 +64,13 @@ static int	syntax_check_and_expand(t_shell *shell, char *command)
 
 static void	execute_and_cleanup(t_shell *shell, char *command)
 {
+	shell->sigint = 0;
+	shell->interepted = 0;
 	shell->cmds = parse(&(shell->cmds), shell->token);
 	shell->last_exit_code = execute_commands(shell);
 	g_last_exit_code = shell->last_exit_code;
 	free(command);
+	shell->line_count = 0;
 	cleanup_shell(shell, false);
 	shell->token = NULL;
 	shell->cmds = NULL;
@@ -75,29 +79,28 @@ static void	execute_and_cleanup(t_shell *shell, char *command)
 
 int	main_loop(t_shell *shell, char **env)
 {
-	char	*command;
 	int		result;
 
 	(void)env;
-	setup_signals();
 	while (1)
 	{
-		command = NULL;
-		shell->token = NULL;
-		shell->cmds = NULL;
-		shell->args = NULL;
-		command = readline("minishell$ ");
-		if (!command)
-			return (shell->last_exit_code = 0, 0);
-		result = handle_empty_or_tokenize(shell, command);
+		setup_signals();
+		set_pointers(shell);
+		shell->command = readline("minishell$ ");
+		if (!shell->command)
+			return (1);
+		result = handle_empty_or_tokenize(shell, shell->command);
 		if (result == 0)
 			return (0);
 		if (result == 1)
 			continue ;
-		result = syntax_check_and_expand(shell, command);
+		result = syntax_check_and_expand(shell, shell->command);
 		if (result == 1)
+		{
+			shell->last_exit_code = 2;
 			continue ;
-		execute_and_cleanup(shell, command);
+		}
+		execute_and_cleanup(shell, shell->command);
 	}
 	return (0);
 }
@@ -118,11 +121,11 @@ int	main(int ac, char **av, char **envp)
 		shell->env = NULL;
 		shell->env_flag = 1;
 		shell->env = init_minimal_env(shell);
-		shell->last_exit_code = 0;
 	}
 	else
 		shell->env = array_to_env(envp, shell);
 	shell->interactive = isatty(STDIN_FILENO);
+	shell->last_exit_code = 0;
 	main_loop(shell, envp);
 	cleanup_shell(shell, true);
 	printf("exit\n");

@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:05:17 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/29 22:28:17 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:53:04 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ t_cmd	*parse(t_cmd **comm, t_token *token)
 	return (head);
 }
 
-char	**expander(char **strs, t_env *env)
+char	**expander(char **strs, t_shell *shell)
 {
 	t_args	*args;
 	char	**result;
 
 	args = malloc(sizeof(t_args));
-	if (!init_args(args, strs, env))
+	if (!init_args(args, strs, shell))
 	{
 		free(args);
 		return (NULL);
@@ -88,7 +88,7 @@ char	**expander(char **strs, t_env *env)
 			continue ;
 		}
 		else
-			fields_expand(args, env);
+			fields_expand(args, shell);
 	}
 	args->res[args->j] = NULL;
 	result = args->res;

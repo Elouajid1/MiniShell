@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 16:56:59 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 11:09:21 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:28:48 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	builtin_cd(char **argv, t_shell *shell)
 	char	*path;
 	char	*home;
 
-	if (argv[2])
+	if (argv[1] && argv[2])
 		return (print_cd_error());
 	if (!argv[1] || (argv[1] && argv[1][0] == '\0'))
 	{
@@ -74,6 +74,8 @@ int	builtin_exit(char **argv, t_shell *shell)
 		if (!is_numeric(argv[1]))
 			status = exit_error_code(argv[1]);
 	}
+	if (argv[1] && ft_strlen(argv[1]) > 19)
+		exit (print_exit_error(argv[1]));
 	if (argv[1] && is_numeric(argv[1]))
 		status = ft_atoi(argv[1]);
 	if (shell->interactive)

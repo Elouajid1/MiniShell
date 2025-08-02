@@ -94,7 +94,7 @@ void	print_echo(char **argv, int *newline, t_shell *shell)
 	shell->i = 1;
 	while (argv[shell->i])
 	{
-		while (!has_only_n(argv[shell->i]))
+		while (argv[shell->i] && !has_only_n(argv[shell->i]))
 			shell->i++;
 		if (shell->i > 1)
 			*newline = 1;

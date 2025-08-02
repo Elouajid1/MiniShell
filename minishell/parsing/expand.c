@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 13:54:55 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/29 15:51:27 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:46:18 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,13 @@ char	*rm_quotes(char *str)
 	return (res);
 }
 
-char	*expand_exit(char *res)
+char	*expand_exit(char *res, t_shell *shell)
 {
 	char	*tmp;
 	char	*value;
 
 	tmp = res;
+	shell->i++;
 	value = ft_itoa(g_last_exit_code);
 	if (!value)
 	{
@@ -77,7 +78,7 @@ char	*expand_exit(char *res)
 	return (res);
 }
 
-char	*handle_dollar(char *res, char *str, int *i, t_env *env)
+char	*handle_dollar(char *res, char *str, int *i, t_shell *shell)
 {
 	if (str[*i] && str[*i] == '$')
 	{
@@ -87,7 +88,7 @@ char	*handle_dollar(char *res, char *str, int *i, t_env *env)
 	else if (str[*i] && str[*i] == '?')
 	{
 		(*i)++;
-		return (expand_exit(res));
+		return (expand_exit(res, shell));
 	}
 	else if (str[*i] && str[*i] == '0')
 	{
@@ -95,10 +96,10 @@ char	*handle_dollar(char *res, char *str, int *i, t_env *env)
 		return (expand_zero(res));
 	}
 	else
-		return (expand_value(res, str, i, env));
+		return (expand_value(res, str, i, shell->env));
 }
 
-char	*expand_str(char *str, t_env *env)
+char	*expand_str(char *str, t_shell *shell)
 {
 	char	*res;
 
@@ -119,7 +120,7 @@ char	*expand_str(char *str, t_env *env)
 			{
 				return (append_char(res, '$'));
 			}
-			res = handle_dollar(res, str, &i, env);
+			res = handle_dollar(res, str, &i, shell);
 		}
 		else
 			res = append_char(res, str[i++]);

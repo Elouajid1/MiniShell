@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 17:04:20 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/21 16:17:27 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:35:05 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ void	tokenize(t_token **token, char **strs)
 		ft_lstadd_back(token, new);
 		i++;
 	}
+}
+
+char	*rm_deli(char *str)
+{
+	int		i;
+	int		j;
+	int		single_q;
+	int		double_q;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	single_q = 0;
+	double_q = 0;
+	if (!str)
+		return (NULL);
+	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	while (str[i])
+	{
+		if (q_handle(str[i], &single_q, &double_q))
+			i++;
+		else
+			res[j++] = str[i++];
+	}
+	res[j] = 0;
+	return (res);
 }

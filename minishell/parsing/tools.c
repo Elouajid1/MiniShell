@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:49:14 by mel-ouaj          #+#    #+#             */
-/*   Updated: 2025/07/29 22:30:23 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:51:27 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_sp(char *str)
 	return (0);
 }
 
-int	count_fields(char **strs, t_env *env)
+int	count_fields(char **strs, t_shell *shell)
 {
 	char	*expanded;
 	char	**fields;
@@ -42,7 +42,7 @@ int	count_fields(char **strs, t_env *env)
 	while (strs[i])
 	{
 		fields = NULL;
-		expanded = expand_str(strs[i], env);
+		expanded = expand_str(strs[i], shell);
 		if (check_sp(expanded))
 		{
 			fields = ft_split1(expanded, 32);
@@ -57,13 +57,13 @@ int	count_fields(char **strs, t_env *env)
 	return (count);
 }
 
-void	fields_expand(t_args *args, t_env *env)
+void	fields_expand(t_args *args, t_shell *shell)
 {
 	char	**tmp;
 	char	**iter;
 	char	*expanded;
 
-	expanded = expand_str(args->strs[args->i], env);
+	expanded = expand_str(args->strs[args->i], shell);
 	if (check_sp(expanded))
 	{
 		tmp = ft_split1(expanded, 32);
@@ -92,10 +92,10 @@ void	check_heredoc(t_args *args)
 		args->res[args->j++] = ft_strdup(args->strs[args->i++]);
 }
 
-int	init_args(t_args *args, char **strs, t_env *env)
+int	init_args(t_args *args, char **strs, t_shell *shell)
 {
 	args->strs = strs;
-	args->res = malloc(sizeof(char *) * (count_fields(strs, env) + 1));
+	args->res = malloc(sizeof(char *) * (count_fields(strs, shell) + 1));
 	if (!args->res)
 		return (0);
 	args->i = 0;

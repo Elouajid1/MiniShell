@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 10:48:37 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 11:00:48 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:09:30 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	builtin_env(t_env *env, t_shell *shell)
 
 	current = env;
 	path = find_env_key(current, "PATH");
-	if (env_error_message(path))
-		return (1);
+	if (env_error_message(path, shell))
+		return (127);
+	if (shell->cmds->argv[1])
+		return (env_error_message(path, shell));
 	if (!shell->env_flag)
 	{
 		while (current)

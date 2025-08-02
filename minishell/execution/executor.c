@@ -6,7 +6,7 @@
 /*   By: mel-ouaj <mel-ouaj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:01:19 by moel-aid          #+#    #+#             */
-/*   Updated: 2025/07/30 11:01:18 by mel-ouaj         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:10:41 by mel-ouaj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,16 @@ int	execute_pipeline(t_cmd *cmds, t_shell *shell)
 int	execute_commands(t_shell *shell)
 {
 	int	exit_status;
+	int	code;
 
+	code = process_heredocs(shell->cmds, shell);
 	exit_status = 0;
 	if (!shell || !shell->cmds)
 		return (EXIT_FAILURE);
-	if (process_heredocs(shell->cmds, shell) == -1)
+	if (code == -1)
 		return (EXIT_FAILURE);
+	else if (code == 130)
+		return (130);
 	if (!shell->cmds->next)
 	{
 		if (shell->cmds->argv && shell->cmds->argv[0]
